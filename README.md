@@ -2,6 +2,7 @@
 
 SES Mailer is wrapper around `boto.ses` to send email via AWS SES
 
+You can use it as standalone or with Flask
 
 Requirements:
 
@@ -33,7 +34,7 @@ Requirements:
     app = Flask(__name__)
 
     mail = Mail()
-    mail.ini_app(app)
+    mail.init_app(app)
 
 
 ### Send Email
@@ -43,7 +44,10 @@ Requirements:
               body="My message body")
 
 
-### Flask Config
+### Config For Flask
+
+SES-Mailer is configured through the standard Flask config API.
+These are the available options:
 
 **SES_MAILER_AWS_ACCESS_KEY_ID** : Your AWS access key id
 
