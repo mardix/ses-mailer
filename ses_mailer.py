@@ -1,12 +1,12 @@
 """
-SES Mailer
+SES-Mailer
 
 A wrapper around boto ses to send email via AWS SES
 
 """
 import boto
 
-__NAME__ = "SESMailer"
+__NAME__ = "SES-Mailer"
 __version__ = "0.1"
 __license__ = "MIT"
 __author__ = "Mardix"
