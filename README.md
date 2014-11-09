@@ -19,7 +19,7 @@ Requirements:
 ### Initiate
 
     from ses_mailer import Mail
-    
+
     mail = Mail(aws_access_key_id="####",
                  aws_secret_access_key="####",
                  sender="me@myemail.com",
@@ -45,13 +45,13 @@ Requirements:
 
 ### Flask Config
 
-*SES_MAILER_AWS_ACCESS_KEY_ID* : Your AWS access key id
+**SES_MAILER_AWS_ACCESS_KEY_ID** : Your AWS access key id
 
-*SES_MAILER_AWS_SECRET_ACCESS_KEY*: Your AWS secred key
+**SES_MAILER_AWS_SECRET_ACCESS_KEY**: Your AWS secred key
 
-*SES_MAILER_SENDER*: The sender email address as string.
+**SES_MAILER_SENDER**: The sender email address as string.
 
-*SES_MAILER_REPLY_TO*: The reply to address
+**SES_MAILER_REPLY_TO**: The reply to address
 
 
     SES_MAILER_AWS_ACCESS_KEY_ID = ""
