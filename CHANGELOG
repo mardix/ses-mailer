@@ -1,3 +1,5 @@
+- 0.3
+    - rename is_email_valid to is_valid_email
 
 - 0.2
     - Added is_email_valid() to valid if email is valid or not

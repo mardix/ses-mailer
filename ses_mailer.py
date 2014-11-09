@@ -9,13 +9,13 @@ import boto
 
 
 __NAME__ = "SES-Mailer"
-__version__ = "0.2"
+__version__ = "0.3"
 __license__ = "MIT"
 __author__ = "Mardix"
 __copyright__ = "(c) 2014 Mardix"
 
 
-def is_email_valid(email):
+def is_valid_email(email):
     """
     Check if email is valid
     """
