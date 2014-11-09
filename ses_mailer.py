@@ -4,13 +4,24 @@ SES-Mailer
 A wrapper around boto ses to send email via AWS SES
 
 """
+import re
 import boto
 
+
 __NAME__ = "SES-Mailer"
-__version__ = "0.1"
+__version__ = "0.2"
 __license__ = "MIT"
 __author__ = "Mardix"
 __copyright__ = "(c) 2014 Mardix"
+
+
+def is_email_valid(email):
+    """
+    Check if email is valid
+    """
+    pattern = '[\w\.-]+@[\w\.-]+[.]\w+'
+    return re.match(pattern, email)
+
 
 class Mail():
 

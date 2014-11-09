@@ -1,3 +1,6 @@
 
+- 0.2
+    - Added is_email_valid() to valid if email is valid or not
+
 - Version 0.1.0
     - First version
