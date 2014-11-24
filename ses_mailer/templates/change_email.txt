@@ -1,0 +1,9 @@
+Dear {{ name }},
+
+To confirm your new email address click on the following link:
+
+{{ url }}
+
+Thank you.
+
+Note: replies to this email address are not monitored.

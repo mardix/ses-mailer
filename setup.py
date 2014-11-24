@@ -3,7 +3,9 @@ SESMailer
 """
 
 from setuptools import setup, find_packages
-import ses_mailer
+
+from ses_mailer import ses_mailer
+
 
 PACKAGE = ses_mailer
 
@@ -20,10 +22,11 @@ setup(
     py_modules=['ses_mailer'],
     include_package_data=True,
     install_requires=[
-        "boto"
+        "boto",
+        "jinja2"
     ],
 
-    keywords=['email', 'flask', 'aws ses', 'ses', 'mailer'],
+    keywords=['email', 'flask', 'aws ses', 'ses', 'mailer', 'jinja2', 'template email'],
     platforms='any',
     classifiers=[
         'Environment :: Web Environment',
@@ -39,5 +42,6 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
+    packages=find_packages(exclude=["test_config.py"]),
     zip_safe=False
 )

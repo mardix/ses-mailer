@@ -26,3 +26,5 @@ dist/*
 .DS_Store
 
 docs/_build*
+
+test_config.py

@@ -1,3 +1,6 @@
+- 0.4
+    - added TemplateMail() to use template file (jinja)
+
 - 0.3
     - rename is_email_valid to is_valid_email
 
