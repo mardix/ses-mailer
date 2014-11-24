@@ -4,7 +4,7 @@ SESMailer
 
 from setuptools import setup, find_packages
 
-from ses_mailer import ses_mailer
+import ses_mailer
 
 
 PACKAGE = ses_mailer
