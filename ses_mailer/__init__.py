@@ -13,7 +13,7 @@ from jinja2 import Environment, FileSystemLoader, DictLoader
 
 
 __NAME__ = "SES-Mailer"
-__version__ = "0.5"
+__version__ = "0.5.1"
 __license__ = "MIT"
 __author__ = "Mardix"
 __copyright__ = "(c) 2014 Mardix"
@@ -201,9 +201,6 @@ class Mail(object):
         :param html_body: The html body to send with this email.
 
         """
-
-
-
         kwargs["to_addresses"] = to
         kwargs["subject"] = subject
         kwargs["body"] = body
@@ -277,7 +274,8 @@ class TemplateMail(object):
             self.default_context = default_context
 
     def init_app(self, app):
-        self.mail = Mail().init_app(app)
+        self.mail = Mail()
+        self.mail.init_app(app)
         self.template = Template(template_dir=app.config.get("SES_MAILER_TEMPLATE_DIR", None),
                                  template_map=app.config.get("SES_MAILER_TEMPLATE_MAP", None),
                                  file_extension=app.config.get("SES_MAILER_TEMPLATE_FILE_EXTENSION", None)
