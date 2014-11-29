@@ -1,3 +1,7 @@
+- 0.5
+    - Added prop __init__ :default_context: and conf SES_MAILER_TEMPLATE_DEFAULT_CONTEXT
+        to add default context
+
 - 0.4
     - added TemplateMail() to use template file (jinja)
 

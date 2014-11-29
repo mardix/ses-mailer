@@ -95,6 +95,8 @@ These are the available options:
 
 **SES_MAILER_TEMPLATE_FILE_EXTENSION**: File extension of template.
 
+**SES_MAILER_TEMPLATE_DEFAULT_CONTEXT**: A dict of default data to be passed by default
+when building the template
 
     SES_MAILER_AWS_ACCESS_KEY_ID = ""
     SES_MAILER_AWS_SECRET_ACCESS_KEY = ""
@@ -103,6 +105,7 @@ These are the available options:
     SES_MAILER_TEMPLATE_DIR = None
     SES_MAILER_TEMPLATE_MAP = None
     SES_MAILER_TEMPLATE_FILE_EXTENSION = None
+    SES_MAILER_TEMPLATE_DEFAULT_CONTEXT = {}
 
 
 ---

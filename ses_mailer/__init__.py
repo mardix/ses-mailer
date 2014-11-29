@@ -13,7 +13,7 @@ from jinja2 import Environment, FileSystemLoader, DictLoader
 
 
 __NAME__ = "SES-Mailer"
-__version__ = "0.4"
+__version__ = "0.5"
 __license__ = "MIT"
 __author__ = "Mardix"
 __copyright__ = "(c) 2014 Mardix"
@@ -251,6 +251,7 @@ class TemplateMail(object):
     """
     mail = None
     template = None
+    default_context = {}
 
     def __init__(self,
                  aws_access_key_id=None,
@@ -259,7 +260,8 @@ class TemplateMail(object):
                  template_dir=None,
                  template_map=None,
                  file_extension=None,
-                 reply_to=None):
+                 reply_to=None,
+                 default_context={}):
 
         if aws_access_key_id and aws_secret_access_key:
             self.mail = Mail(aws_access_key_id=aws_access_key_id,
@@ -271,12 +273,16 @@ class TemplateMail(object):
             self.template = Template(template_dir=template_dir,
                                      template_map=template_map,
                                      file_extension=file_extension)
+        if default_context:
+            self.default_context = default_context
 
     def init_app(self, app):
         self.mail = Mail().init_app(app)
         self.template = Template(template_dir=app.config.get("SES_MAILER_TEMPLATE_DIR", None),
                                  template_map=app.config.get("SES_MAILER_TEMPLATE_MAP", None),
-                                 file_extension=app.config.get("SES_MAILER_TEMPLATE_FILE_EXTENSION", None))
+                                 file_extension=app.config.get("SES_MAILER_TEMPLATE_FILE_EXTENSION", None)
+                                 )
+        self.default_context = app.config.get("SES_MAILER_TEMPLATE_DEFAULT_CONTEXT", {})
 
 
     def send(self, template_name, to, **context):
@@ -285,18 +291,20 @@ class TemplateMail(object):
         """
         required_blocks = ["subject", "body"]
         optional_blocks = ["text_body", "html_body", "return_path", "format"]
-        mail_params = {}
+
+        if self.default_context:
+            context = dict(self.default_context.items() + context.items())
         blocks = self.template.render_blocks(template_name, **context)
 
         for rb in required_blocks:
             if rb not in blocks:
                 raise AttributeError("Template error: block '%s' is missing from '%s'" % (rb, template_name))
 
+        mail_params = {}
         for ob in optional_blocks:
             if ob in blocks:
                 if ob == "format" and mail_params[ob] not in ["html", "text"]:
                     continue
-
                 mail_params[ob] = blocks[ob]
 
         subject = blocks["subject"].strip()
