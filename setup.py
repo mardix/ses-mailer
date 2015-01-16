@@ -6,7 +6,6 @@ from setuptools import setup, find_packages
 
 import ses_mailer
 
-
 PACKAGE = ses_mailer
 
 setup(

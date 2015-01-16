@@ -8,12 +8,18 @@ It also allow you to use files as template to send email
 """
 import os
 import re
-import boto
-from jinja2 import Environment, FileSystemLoader, DictLoader
+try:
+    import boto
+except ImportError as ex:
+    print("Boto is missing. pip --install boto")
+try:
+    from jinja2 import Environment, FileSystemLoader, DictLoader
+except ImportError as ex:
+    print("Jinja2 is missing. pip --install jinja2")
 
 
 __NAME__ = "SES-Mailer"
-__version__ = "0.5.1"
+__version__ = "0.5.2"
 __license__ = "MIT"
 __author__ = "Mardix"
 __copyright__ = "(c) 2014 Mardix"
