@@ -14,7 +14,7 @@ setup(
     license=PACKAGE.__license__,
     author=PACKAGE.__author__,
     author_email='mardix@github.com',
-    description=PACKAGE.__doc__,
+    description="A simple module to send email via AWS SES",
     long_description=PACKAGE.__doc__,
     url='http://github.com/mardix/ses-mailer/',
     download_url='http://github.com/mardix/ses-mailer/tarball/master',
@@ -25,7 +25,14 @@ setup(
         "jinja2"
     ],
 
-    keywords=['email', 'flask', 'aws ses', 'ses', 'mailer', 'jinja2', 'template email'],
+    keywords=['email',
+              'flask',
+              'aws ses',
+              'amazon',
+              'ses',
+              'mailer',
+              'jinja2',
+              'template email'],
     platforms='any',
     classifiers=[
         'Environment :: Web Environment',
