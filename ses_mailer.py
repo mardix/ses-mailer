@@ -19,7 +19,7 @@ except ImportError as ex:
 
 
 __NAME__ = "SES-Mailer"
-__version__ = "0.11.0"
+__version__ = "0.12.0"
 __license__ = "MIT"
 __author__ = "Mardix"
 __copyright__ = "(c) 2015 Mardix"
@@ -113,22 +113,26 @@ class Mail(object):
                  sender=None,
                  reply_to=None,
                  template=None,
-                 template_context={}):
+                 template_context={},
+                 app=None):
         """
         Setup the mail
 
         """
-        if aws_access_key_id and aws_secret_access_key:
-            self.ses = boto.connect_ses(aws_access_key_id=aws_access_key_id,
-                                        aws_secret_access_key=aws_secret_access_key)
+        if app:
+            self.init_app(app)
+        else:
+            if aws_access_key_id and aws_secret_access_key:
+                self.ses = boto.connect_ses(aws_access_key_id=aws_access_key_id,
+                                            aws_secret_access_key=aws_secret_access_key)
 
-        self.sender = sender
-        self.reply_to = reply_to or self.sender
+            self.sender = sender
+            self.reply_to = reply_to or self.sender
 
-        if template:
-            self.template = Template(template=template)
-        if template_context:
-            self.template_context = template_context
+            if template:
+                self.template = Template(template=template)
+            if template_context:
+                self.template_context = template_context
 
     def init_app(self, app):
         """
