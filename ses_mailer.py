@@ -19,7 +19,7 @@ except ImportError as ex:
 
 
 __NAME__ = "SES-Mailer"
-__version__ = "0.10.0"
+__version__ = "0.11.0"
 __license__ = "MIT"
 __author__ = "Mardix"
 __copyright__ = "(c) 2015 Mardix"
@@ -193,7 +193,6 @@ class Mail(object):
         :param html_body: The html body to send with this email.
 
         """
-
         if not self.sender:
             raise AttributeError("Sender email 'sender' or 'source' is not provided")
 
@@ -208,8 +207,23 @@ class Mail(object):
 
     def send_template(self, template, to, reply_to=None, **context):
         """
-        Send email using a template
-        :param template_name
+        Send email from template
+        """
+        mail_data = self.parse_template(template, **context)
+        subject = mail_data["subject"]
+        body = mail_data["body"]
+        del(mail_data["subject"])
+        del(mail_data["body"])
+
+        return self.send(to=to,
+                         subject=subject,
+                         body=body,
+                         reply_to=reply_to,
+                         **mail_data)
+    
+    def parse_template(self, template, **context):
+        """
+        To parse a template and return all the blocks
         """
         required_blocks = ["subject", "body"]
         optional_blocks = ["text_body", "html_body", "return_path", "format"]
@@ -222,23 +236,18 @@ class Mail(object):
             if rb not in blocks:
                 raise AttributeError("Template error: block '%s' is missing from '%s'" % (rb, template))
 
-        mail_params = {}
+        mail_params = {
+            "subject": blocks["subject"].strip(),
+            "body": blocks["body"]
+        }
         for ob in optional_blocks:
             if ob in blocks:
-                if ob == "format" and mail_params[ob] not in ["html", "text"]:
+                if ob == "format" and mail_params[ob].lower() not in ["html", "text"]:
                     continue
                 mail_params[ob] = blocks[ob]
+        return mail_params
 
-        subject = blocks["subject"].strip()
-        body = blocks["body"]
 
-        return self.send(to=to,
-                         subject=subject,
-                         body=body,
-                         reply_to=reply_to,
-                         **mail_params)
-    
-    
     def _get_sender(self, sender):
         """
         Return a tuple of 3 elements
