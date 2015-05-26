@@ -153,9 +153,9 @@ To send the email for either files or dictionary based templates:
 SES-Mailer is configured through the standard Flask config API.
 These are the available options:
 
-**AWS_ACCESS_KEY_ID** : Your AWS access key id
+**SES_AWS_ACCESS_KEY** : Your AWS access key id
 
-**AWS_SECRET_ACCESS_KEY**: Your AWS secred key
+**SES_AWS_SECRET_KEY**: Your AWS secred key
 
 **SES_SENDER**: The sender email address as string.
 
@@ -165,8 +165,8 @@ These are the available options:
 
 **SES_TEMPLATE_CONTEXT**: A dict of default data to be passed by default
 
-    AWS_ACCESS_KEY_ID = ""
-    AWS_SECRET_ACCESS_KEY = ""
+    SES_AWS_ACCESS_KEY = ""
+    SES_AWS_SECRET_KEY = ""
     SES_SENDER = ""
     SES_REPLY_TO = ""
     SES_TEMPLATE = None

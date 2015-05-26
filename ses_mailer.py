@@ -19,7 +19,7 @@ except ImportError as ex:
 
 
 __NAME__ = "SES-Mailer"
-__version__ = "0.12.0"
+__version__ = "0.12.1"
 __license__ = "MIT"
 __author__ = "Mardix"
 __copyright__ = "(c) 2015 Mardix"
@@ -138,8 +138,8 @@ class Mail(object):
         """
         For Flask using the app config
         """
-        self.__init__(aws_access_key_id=app.config.get("AWS_ACCESS_KEY_ID"),
-                      aws_secret_access_key=app.config.get("AWS_SECRET_ACCESS_KEY"),
+        self.__init__(aws_access_key_id=app.config.get("SES_AWS_ACCESS_KEY"),
+                      aws_secret_access_key=app.config.get("SES_AWS_SECRET_KEY"),
                       sender=app.config.get("SES_SENDER", None),
                       reply_to=app.config.get("SES_REPLY_TO", None),
                       template=app.config.get("SES_TEMPLATE", None),
