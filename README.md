@@ -24,6 +24,7 @@ Requirements:
 
     mail = Mail(aws_access_key_id="####",
                  aws_secret_access_key="####",
+                 region="us-east-1",
                  sender="me@myemail.com",
                  reply_to="me@email.com",
                  template="./email-templates")
@@ -157,6 +158,8 @@ These are the available options:
 
 **SES_AWS_SECRET_KEY**: Your AWS secred key
 
+**SES_REGION**: AWS region of the SES
+
 **SES_SENDER**: The sender email address as string.
 
 **SES_REPLY_TO**: The reply to address
@@ -167,6 +170,7 @@ These are the available options:
 
     SES_AWS_ACCESS_KEY = ""
     SES_AWS_SECRET_KEY = ""
+    SES_REGION = ""
     SES_SENDER = ""
     SES_REPLY_TO = ""
     SES_TEMPLATE = None

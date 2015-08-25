@@ -10,6 +10,7 @@ import os
 import re
 try:
     import boto
+    import boto.ses
 except ImportError as ex:
     print("Boto is missing. pip --install boto")
 try:
@@ -110,6 +111,7 @@ class Mail(object):
     def __init__(self,
                  aws_access_key_id=None,
                  aws_secret_access_key=None,
+                 region=None,
                  sender=None,
                  reply_to=None,
                  template=None,
@@ -123,8 +125,13 @@ class Mail(object):
             self.init_app(app)
         else:
             if aws_access_key_id and aws_secret_access_key:
-                self.ses = boto.connect_ses(aws_access_key_id=aws_access_key_id,
-                                            aws_secret_access_key=aws_secret_access_key)
+                if region:
+                    self.ses = boto.ses.connect_to_region(region,
+                                                          aws_access_key_id=aws_access_key_id,
+                                                          aws_secret_access_key=aws_secret_access_key)
+                else:
+                    self.ses = boto.connect_ses(aws_access_key_id=aws_access_key_id,
+                                                aws_secret_access_key=aws_secret_access_key)
 
             self.sender = sender
             self.reply_to = reply_to or self.sender
@@ -140,6 +147,7 @@ class Mail(object):
         """
         self.__init__(aws_access_key_id=app.config.get("SES_AWS_ACCESS_KEY"),
                       aws_secret_access_key=app.config.get("SES_AWS_SECRET_KEY"),
+                      region=app.config.get("SES_REGION", None),
                       sender=app.config.get("SES_SENDER", None),
                       reply_to=app.config.get("SES_REPLY_TO", None),
                       template=app.config.get("SES_TEMPLATE", None),
