@@ -6,6 +6,7 @@ Create a file test_config.py and add the following
 
 AWS_ACCESS_KEY_ID = ""
 AWS_SECRET_ACCESS_KEY = ""
+AWS_REGION = ""
 EMAIL_SENDER = ""
 EMAIL_RECIPIENT = ""
 
@@ -58,6 +59,7 @@ def test_template_render():
 
 mail = Mail(aws_secret_access_key=test_config.AWS_SECRET_ACCESS_KEY,
             aws_access_key_id=test_config.AWS_ACCESS_KEY_ID,
+            region=test_config.AWS_REGION,
             sender=test_config.EMAIL_SENDER,
             template=templateMap)
 
