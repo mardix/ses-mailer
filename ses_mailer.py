@@ -20,7 +20,7 @@ except ImportError as ex:
 
 
 __NAME__ = "SES-Mailer"
-__version__ = "0.12.1"
+__version__ = "0.13.0"
 __license__ = "MIT"
 __author__ = "Mardix"
 __copyright__ = "(c) 2015 Mardix"
@@ -111,7 +111,7 @@ class Mail(object):
     def __init__(self,
                  aws_access_key_id=None,
                  aws_secret_access_key=None,
-                 region=None,
+                 region="us-east-1",
                  sender=None,
                  reply_to=None,
                  template=None,
@@ -147,7 +147,7 @@ class Mail(object):
         """
         self.__init__(aws_access_key_id=app.config.get("SES_AWS_ACCESS_KEY"),
                       aws_secret_access_key=app.config.get("SES_AWS_SECRET_KEY"),
-                      region=app.config.get("SES_REGION", None),
+                      region=app.config.get("SES_REGION", "us-east-1"),
                       sender=app.config.get("SES_SENDER", None),
                       reply_to=app.config.get("SES_REPLY_TO", None),
                       template=app.config.get("SES_TEMPLATE", None),

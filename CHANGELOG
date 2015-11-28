@@ -1,4 +1,10 @@
 
+- 0.13.0
+    - Merge pull request that added AWS region. By default 'us-east-1'
+
+[0.7 - 0.12]
+    I forgot what happened. :( check the commit history :)
+
 - 0.6:
     - Added params: sender and reply_to to manually include the sender and reply to
 
