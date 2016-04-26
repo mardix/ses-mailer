@@ -155,7 +155,7 @@ class Mail(object):
         )
 
 
-    def send(self, to, subject, body, reply_to=None, **kwargs):
+    def send(self, to, subject, body, reply_to=None, sender=None, **kwargs):
         """
         Send email via AWS SES.
         :returns string: message id
@@ -205,13 +205,13 @@ class Mail(object):
         :param html_body: The html body to send with this email.
 
         """
-        if not self.sender:
-            raise AttributeError("Sender email 'sender' or 'source' is not provided")
+        if not self.sender and not sender:
+            raise AttributeError("Sender email 'sender' is not provided")
 
         kwargs["to_addresses"] = to
         kwargs["subject"] = subject
         kwargs["body"] = body
-        kwargs["source"] = self._get_sender(self.sender)[0]
+        kwargs["source"] = self._get_sender(sender or self.sender)[0]
         kwargs["reply_addresses"] = self._get_sender(reply_to or self.reply_to)[2]
 
         response = self.ses.send_email(**kwargs)
