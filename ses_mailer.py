@@ -20,7 +20,7 @@ except ImportError as ex:
 
 
 __NAME__ = "SES-Mailer"
-__version__ = "0.13.0"
+__version__ = "0.14.0"
 __license__ = "MIT"
 __author__ = "Mardix"
 __copyright__ = "(c) 2015 Mardix"

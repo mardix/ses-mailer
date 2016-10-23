@@ -1,3 +1,7 @@
+- 0.14.0
+    - Merged PR to fix template context handling in Py3
+    - Merged PR to allow specifying sender manually when sending email
+    - Merged PR to allow using native boto credentials lookup
 
 - 0.13.0
     - Merge pull request that added AWS region. By default 'us-east-1'
