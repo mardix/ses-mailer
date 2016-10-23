@@ -1,5 +1,5 @@
 """
-SES-Mailer
+SES-Mailer-2
 
 A simple module to send email via AWS SES
 
