@@ -124,14 +124,13 @@ class Mail(object):
         if app:
             self.init_app(app)
         else:
-            if aws_access_key_id and aws_secret_access_key:
-                if region:
-                    self.ses = boto.ses.connect_to_region(region,
-                                                          aws_access_key_id=aws_access_key_id,
-                                                          aws_secret_access_key=aws_secret_access_key)
-                else:
-                    self.ses = boto.connect_ses(aws_access_key_id=aws_access_key_id,
-                                                aws_secret_access_key=aws_secret_access_key)
+            if region:
+                self.ses = boto.ses.connect_to_region(region,
+                                                      aws_access_key_id=aws_access_key_id,
+                                                      aws_secret_access_key=aws_secret_access_key)
+            else:
+                self.ses = boto.connect_ses(aws_access_key_id=aws_access_key_id,
+                                            aws_secret_access_key=aws_secret_access_key)
 
             self.sender = sender
             self.reply_to = reply_to or self.sender
