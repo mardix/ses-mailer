@@ -116,6 +116,7 @@ class Mail(object):
                  reply_to=None,
                  template=None,
                  template_context={},
+                 aws_boto_auth_lookup=False,
                  app=None):
         """
         Setup the mail
@@ -124,15 +125,17 @@ class Mail(object):
         if app:
             self.init_app(app)
         else:
-            if region:
-                self.ses = boto.ses.connect_to_region(
-                    region,
-                    aws_access_key_id=aws_access_key_id,
-                    aws_secret_access_key=aws_secret_access_key)
-            else:
-                self.ses = boto.connect_ses(
-                    aws_access_key_id=aws_access_key_id,
-                    aws_secret_access_key=aws_secret_access_key)
+            if (aws_access_key_id and aws_secret_access_key) or \
+                    aws_boto_auth_lookup:
+                if region:
+                    self.ses = boto.ses.connect_to_region(
+                        region,
+                        aws_access_key_id=aws_access_key_id,
+                        aws_secret_access_key=aws_secret_access_key)
+                else:
+                    self.ses = boto.connect_ses(
+                        aws_access_key_id=aws_access_key_id,
+                        aws_secret_access_key=aws_secret_access_key)
 
             self.sender = sender
             self.reply_to = reply_to or self.sender
@@ -154,6 +157,7 @@ class Mail(object):
             reply_to=app.config.get("SES_REPLY_TO", None),
             template=app.config.get("SES_TEMPLATE", None),
             template_context=app.config.get("SES_TEMPLATE_CONTEXT", {}),
+            aws_boto_auth_lookup=app.config.get("SES_AWS_BOTO_LOOKUP", False),
         )
 
     def send(self, to, subject, body, reply_to=None, sender=None, **kwargs):
