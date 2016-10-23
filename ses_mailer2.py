@@ -19,7 +19,7 @@ except ImportError as ex:
     print("Jinja2 is missing. pip --install jinja2")
 
 
-__NAME__ = "SES-Mailer"
+__NAME__ = "SES-Mailer-2"
 __version__ = "0.14.0"
 __license__ = "MIT"
 __author__ = "Mardix"
