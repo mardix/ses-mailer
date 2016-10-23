@@ -40,7 +40,7 @@ class Template(object):
 
     def __init__(self, template):
         """
-        :param template: (string | dict) - The directory or dict map of templates
+        :param template: (string | dict) - The directory or dict of templates
             - as string: A directory
             - as dict: {'index.html': 'source here'}
         """
@@ -59,9 +59,9 @@ class Template(object):
         Retrieve the cached version of the template
         """
         if template_name not in self.chached_templates:
-            self.chached_templates[template_name] = self.env.get_template(template_name)
+            self.chached_templates[template_name] = \
+                self.env.get_template(template_name)
         return self.chached_templates[template_name]
-
 
     def render_blocks(self, template_name, **context):
         """
@@ -74,8 +74,8 @@ class Template(object):
         template = self._get_template(template_name)
         for block in template.blocks:
             blocks[block] = self._render_context(template,
-                                                template.blocks[block],
-                                                **context)
+                                                 template.blocks[block],
+                                                 **context)
         return blocks
 
     def render(self, template_name, block, **context):
@@ -125,12 +125,14 @@ class Mail(object):
             self.init_app(app)
         else:
             if region:
-                self.ses = boto.ses.connect_to_region(region,
-                                                      aws_access_key_id=aws_access_key_id,
-                                                      aws_secret_access_key=aws_secret_access_key)
+                self.ses = boto.ses.connect_to_region(
+                    region,
+                    aws_access_key_id=aws_access_key_id,
+                    aws_secret_access_key=aws_secret_access_key)
             else:
-                self.ses = boto.connect_ses(aws_access_key_id=aws_access_key_id,
-                                            aws_secret_access_key=aws_secret_access_key)
+                self.ses = boto.connect_ses(
+                    aws_access_key_id=aws_access_key_id,
+                    aws_secret_access_key=aws_secret_access_key)
 
             self.sender = sender
             self.reply_to = reply_to or self.sender
@@ -144,15 +146,15 @@ class Mail(object):
         """
         For Flask using the app config
         """
-        self.__init__(aws_access_key_id=app.config.get("SES_AWS_ACCESS_KEY"),
-                      aws_secret_access_key=app.config.get("SES_AWS_SECRET_KEY"),
-                      region=app.config.get("SES_REGION", "us-east-1"),
-                      sender=app.config.get("SES_SENDER", None),
-                      reply_to=app.config.get("SES_REPLY_TO", None),
-                      template=app.config.get("SES_TEMPLATE", None),
-                      template_context=app.config.get("SES_TEMPLATE_CONTEXT", {})
+        self.__init__(
+            aws_access_key_id=app.config.get("SES_AWS_ACCESS_KEY"),
+            aws_secret_access_key=app.config.get("SES_AWS_SECRET_KEY"),
+            region=app.config.get("SES_REGION", "us-east-1"),
+            sender=app.config.get("SES_SENDER", None),
+            reply_to=app.config.get("SES_REPLY_TO", None),
+            template=app.config.get("SES_TEMPLATE", None),
+            template_context=app.config.get("SES_TEMPLATE_CONTEXT", {}),
         )
-
 
     def send(self, to, subject, body, reply_to=None, sender=None, **kwargs):
         """
@@ -211,7 +213,8 @@ class Mail(object):
         kwargs["subject"] = subject
         kwargs["body"] = body
         kwargs["source"] = self._get_sender(sender or self.sender)[0]
-        kwargs["reply_addresses"] = self._get_sender(reply_to or self.reply_to)[2]
+        kwargs["reply_addresses"] = self._get_sender(
+            reply_to or self.reply_to)[2]
 
         response = self.ses.send_email(**kwargs)
         return response["SendEmailResponse"]["SendEmailResult"]["MessageId"]
@@ -240,12 +243,15 @@ class Mail(object):
         optional_blocks = ["text_body", "html_body", "return_path", "format"]
 
         if self.template_context:
-            context = dict(list(self.template_context.items()) + list(context.items()))
+            context = dict(list(self.template_context.items()) +
+                           list(context.items()))
         blocks = self.template.render_blocks(template, **context)
 
         for rb in required_blocks:
             if rb not in blocks:
-                raise AttributeError("Template error: block '%s' is missing from '%s'" % (rb, template))
+                raise AttributeError(
+                    "Template error: block '%s' is missing from '%s'" %
+                    (rb, template))
 
         mail_params = {
             "subject": blocks["subject"].strip(),
@@ -253,11 +259,11 @@ class Mail(object):
         }
         for ob in optional_blocks:
             if ob in blocks:
-                if ob == "format" and mail_params[ob].lower() not in ["html", "text"]:
+                if ob == "format" and \
+                        mail_params[ob].lower() not in ["html", "text"]:
                     continue
                 mail_params[ob] = blocks[ob]
         return mail_params
-
 
     def _get_sender(self, sender):
         """
@@ -272,4 +278,3 @@ class Mail(object):
             return "%s <%s>" % sender, sender[0], sender[1]
         else:
             return sender, sender, sender
-
