@@ -240,7 +240,7 @@ class Mail(object):
         optional_blocks = ["text_body", "html_body", "return_path", "format"]
 
         if self.template_context:
-            context = dict(self.template_context.items() + context.items())
+            context = dict(list(self.template_context.items()) + list(context.items()))
         blocks = self.template.render_blocks(template, **context)
 
         for rb in required_blocks:
