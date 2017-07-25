@@ -1,5 +1,5 @@
 """
-SESMailer
+SESMailer2
 """
 
 from setuptools import setup, find_packages
@@ -16,8 +16,8 @@ setup(
     author_email='mardix@github.com',
     description="A simple module to send email via AWS SES",
     long_description=PACKAGE.__doc__,
-    url='http://github.com/mardix/ses-mailer/',
-    download_url='http://github.com/mardix/ses-mailer/tarball/master',
+    url='http://github.com/MarSoft/ses-mailer-2/',
+    download_url='http://github.com/MarSoft/ses-mailer-2/tarball/master',
     py_modules=['ses_mailer'],
     include_package_data=True,
     install_requires=[

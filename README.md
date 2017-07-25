@@ -23,11 +23,14 @@ Requirements:
     from ses_mailer import Mail
 
     mail = Mail(aws_access_key_id="####",
-                 aws_secret_access_key="####",
-                 region="us-east-1",
-                 sender="me@myemail.com",
-                 reply_to="me@email.com",
-                 template="./email-templates")
+                aws_secret_access_key="####",
+                region="us-east-1",
+                sender="me@myemail.com",
+                reply_to="me@email.com",
+                template="./email-templates")
+
+Alternatively, if you want to use `botocore`'s default credentials lookup scheme,
+you can pass `aws_boto_auth_lookup=True` instead of providing keys.
                  
 #### Send Basic Email
 
@@ -160,17 +163,20 @@ These are the available options:
 
 **SES_REGION**: AWS region of the SES
 
+**SES_AWS_BOTO_LOOKUP**: Flag asking to use Boto's default credentials lookup scheme
+
 **SES_SENDER**: The sender email address as string.
 
 **SES_REPLY_TO**: The reply to address
 
 **SES_TEMPLATE**: (mixed) directory or dict of template to use as template
 
-**SES_TEMPLATE_CONTEXT**: A dict of default data to be passed by default
+**SES_TEMPLATE_CONTEXT**: A dict of template data to be passed by default
 
     SES_AWS_ACCESS_KEY = ""
     SES_AWS_SECRET_KEY = ""
     SES_REGION = ""
+    SES_AWS_BOTO_LOOKUP = False
     SES_SENDER = ""
     SES_REPLY_TO = ""
     SES_TEMPLATE = None
