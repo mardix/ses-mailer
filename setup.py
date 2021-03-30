@@ -21,7 +21,7 @@ setup(
     py_modules=['ses_mailer'],
     include_package_data=True,
     install_requires=[
-        "boto",
+        "boto3",
         "jinja2"
     ],
 

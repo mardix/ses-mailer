@@ -9,10 +9,10 @@ It also allow you to use templates to send email
 import os
 import re
 try:
-    import boto
-    import boto.ses
+    import boto3
+    import boto3.ses
 except ImportError as ex:
-    print("Boto is missing. pip --install boto")
+    print("Boto3 is missing. pip --install boto3")
 try:
     from jinja2 import Environment, FileSystemLoader, DictLoader
 except ImportError as ex:
@@ -128,12 +128,12 @@ class Mail(object):
             if (aws_access_key_id and aws_secret_access_key) or \
                     aws_boto_auth_lookup:
                 if region:
-                    self.ses = boto.ses.connect_to_region(
+                    self.ses = boto3.ses.connect_to_region(
                         region,
                         aws_access_key_id=aws_access_key_id,
                         aws_secret_access_key=aws_secret_access_key)
                 else:
-                    self.ses = boto.connect_ses(
+                    self.ses = boto3.connect_ses(
                         aws_access_key_id=aws_access_key_id,
                         aws_secret_access_key=aws_secret_access_key)
 
