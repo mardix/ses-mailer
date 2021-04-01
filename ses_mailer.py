@@ -19,7 +19,7 @@ except ImportError as ex:
 
 class Template(object):
     env = None
-    chached_templates = {}
+    cached_templates = {}
 
     def __init__(self, template):
         """
@@ -41,10 +41,10 @@ class Template(object):
         """
         Retrieve the cached version of the template
         """
-        if template_name not in self.chached_templates:
-            self.chached_templates[template_name] = \
+        if template_name not in self.cached_templates:
+            self.cached_templates[template_name] = \
                 self.env.get_template(template_name)
-        return self.chached_templates[template_name]
+        return self.cached_templates[template_name]
 
     def render_blocks(self, template_name, **context):
         """
