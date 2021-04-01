@@ -1,21 +1,12 @@
 """
-SES-Mailer-2
-
 A simple module to send email via AWS SES
 
 It also allow you to use templates to send email
-
 """
 import os
 import re
-try:
-    import boto3
-except ImportError as ex:
-    print("Boto3 is missing. pip --install boto3")
-try:
-    from jinja2 import Environment, FileSystemLoader, DictLoader
-except ImportError as ex:
-    print("Jinja2 is missing. pip --install jinja2")
+import boto3
+from jinja2 import Environment, FileSystemLoader, DictLoader
 
 class Template(object):
     env = None
