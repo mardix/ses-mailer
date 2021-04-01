@@ -10,29 +10,12 @@ import os
 import re
 try:
     import boto3
-    import boto3.ses
 except ImportError as ex:
     print("Boto3 is missing. pip --install boto3")
 try:
     from jinja2 import Environment, FileSystemLoader, DictLoader
 except ImportError as ex:
     print("Jinja2 is missing. pip --install jinja2")
-
-
-__NAME__ = "SES-Mailer-2"
-__version__ = "0.14.1"
-__license__ = "MIT"
-__author__ = "Mardix"
-__copyright__ = "(c) 2015 Mardix"
-
-
-def is_valid_email(email):
-    """
-    Check if email is valid
-    """
-    pattern = '[\w\.-]+@[\w\.-]+[.]\w+'
-    return re.match(pattern, email)
-
 
 class Template(object):
     env = None
