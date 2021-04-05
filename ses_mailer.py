@@ -100,6 +100,7 @@ class Mail(object):
         else:
             if (aws_access_key_id and aws_secret_access_key):
                 self.client = boto3.client('ses',
+                region_name = region,
                 aws_access_key_id =  aws_access_key_id,
                 aws_secret_access_key = aws_secret_access_key
             )
@@ -182,17 +183,17 @@ class Mail(object):
         if not self.sender and not sender:
             raise AttributeError("Sender email 'sender' is not provided")
 
-        txt_body = text_body or body
+        txt_body = kwargs.get('text_body') or body
 
         source = self._get_sender(sender or self.sender)[0]
         destination = {'ToAddresses': self._listify(to),
-                       'CcAddresses': self._listify(cc_addresses),
-                       'BccAddresses': self._listify(bcc_addresse)
+                       'CcAddresses': self._listify(kwargs.get('cc_addresses')),
+                       'BccAddresses': self._listify(kwargs.get('bcc_addresses'))
         }
         message = {'Subject': {'Data': subject},
                    'Body': {
-                       'Text': {'Data': txt_body, 'Charset': 'UTF-8'}
-                       'Html': {'Data': html_body, 'Charset': 'UTF-8'}
+                       'Text': {'Data': txt_body, 'Charset': 'UTF-8'},
+                       'Html': {'Data': kwargs.get('html_body'), 'Charset': 'UTF-8'}
                    }
         }            
         reply_addresses = [self._get_sender(reply_to or self.reply_to)[2]]
@@ -200,7 +201,8 @@ class Mail(object):
         try:
             response = self.client.send_email(Source=source,
                 Destination=destination, Message=message,
-                ReplyToAddresses=reply_addresses, ReturnPath=return_path)
+                ReplyToAddresses=reply_addresses, 
+                ReturnPath=ikwargs.get('return_path'))
 
             return response.get('MessageId')
         except boto3.SES.Client.exceptions.MessageRejected:
