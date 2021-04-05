@@ -85,12 +85,11 @@ class Mail(object):
     def __init__(self,
                  aws_access_key_id=None,
                  aws_secret_access_key=None,
-                 region="us-east-1",
+                 region=None,
                  sender=None,
                  reply_to=None,
                  template=None,
                  template_context={},
-                 aws_boto_auth_lookup=False,
                  app=None):
         """
         Setup the mail
@@ -99,17 +98,13 @@ class Mail(object):
         if app:
             self.init_app(app)
         else:
-            if (aws_access_key_id and aws_secret_access_key) or \
-                    aws_boto_auth_lookup:
-                if region:
-                    self.ses = boto3.ses.connect_to_region(
-                        region,
-                        aws_access_key_id=aws_access_key_id,
-                        aws_secret_access_key=aws_secret_access_key)
-                else:
-                    self.ses = boto3.connect_ses(
-                        aws_access_key_id=aws_access_key_id,
-                        aws_secret_access_key=aws_secret_access_key)
+            if (aws_access_key_id and aws_secret_access_key):
+                self.client = boto3.client('ses',
+                aws_access_key_id =  aws_access_key_id,
+                aws_secret_access_key = aws_secret_access_key
+            )
+            else:  # credentials from an aws config file
+                self.client = boto3.client('ses')
 
             self.sender = sender
             self.reply_to = reply_to or self.sender
@@ -187,15 +182,29 @@ class Mail(object):
         if not self.sender and not sender:
             raise AttributeError("Sender email 'sender' is not provided")
 
-        kwargs["to_addresses"] = to
-        kwargs["subject"] = subject
-        kwargs["body"] = body
-        kwargs["source"] = self._get_sender(sender or self.sender)[0]
-        kwargs["reply_addresses"] = self._get_sender(
-            reply_to or self.reply_to)[2]
+        txt_body = text_body or body
 
-        response = self.ses.send_email(**kwargs)
-        return response["SendEmailResponse"]["SendEmailResult"]["MessageId"]
+        source = self._get_sender(sender or self.sender)[0]
+        destination = {'ToAddresses': self._listify(to),
+                       'CcAddresses': self._listify(cc_addresses),
+                       'BccAddresses': self._listify(bcc_addresse)
+        }
+        message = {'Subject': {'Data': subject},
+                   'Body': {
+                       'Text': {'Data': txt_body, 'Charset': 'UTF-8'}
+                       'Html': {'Data': html_body, 'Charset': 'UTF-8'}
+                   }
+        }            
+        reply_addresses = [self._get_sender(reply_to or self.reply_to)[2]]
+  
+        try:
+            response = self.client.send_email(Source=source,
+                Destination=destination, Message=message,
+                ReplyToAddresses=reply_addresses, ReturnPath=return_path)
+
+            return response.get('MessageId')
+        except boto3.SES.Client.exceptions.MessageRejected:
+            return None
 
     def send_template(self, template, to, reply_to=None, **context):
         """
@@ -256,3 +265,8 @@ class Mail(object):
             return "%s <%s>" % sender, sender[0], sender[1]
         else:
             return sender, sender, sender
+    
+    def _listify(self, maybe_str):
+        if type(maybe_str) == str:
+            return [maybe_str]
+        return mabe_str    

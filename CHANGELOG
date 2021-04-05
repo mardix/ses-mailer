@@ -1,3 +1,6 @@
+- 0.15.0
+    - Forked project again because the original one seems inactive
+	- Removed problematic is_valid_email()
 - 0.14.0
     - Forked project as original one is inactive for almost a year
     - Merged PR to fix template context handling in Py3
