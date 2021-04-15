@@ -6,6 +6,7 @@ It also allow you to use templates to send email
 import os
 import re
 import boto3
+import botocore
 from jinja2 import Environment, FileSystemLoader, DictLoader
 
 class Template(object):
@@ -183,17 +184,18 @@ class Mail(object):
         if not self.sender and not sender:
             raise AttributeError("Sender email 'sender' is not provided")
 
-        txt_body = kwargs.get('text_body') or body
+        text_body = kwargs.get('text_body', body) 
+        html_body = kwargs.get('html_body', body) 
 
         source = self._get_sender(sender or self.sender)[0]
         destination = {'ToAddresses': self._listify(to),
-                       'CcAddresses': self._listify(kwargs.get('cc_addresses')),
-                       'BccAddresses': self._listify(kwargs.get('bcc_addresses'))
+                       'CcAddresses': self._listify(kwargs.get('cc_addresses',[])),
+                       'BccAddresses': self._listify(kwargs.get('bcc_addresses',[]))
         }
         message = {'Subject': {'Data': subject},
                    'Body': {
-                       'Text': {'Data': txt_body, 'Charset': 'UTF-8'},
-                       'Html': {'Data': kwargs.get('html_body'), 'Charset': 'UTF-8'}
+                       'Text': {'Data': text_body, 'Charset': 'UTF-8'},
+                       'Html': {'Data': html_body, 'Charset': 'UTF-8'}
                    }
         }            
         reply_addresses = [self._get_sender(reply_to or self.reply_to)[2]]
@@ -201,11 +203,11 @@ class Mail(object):
         try:
             response = self.client.send_email(Source=source,
                 Destination=destination, Message=message,
-                ReplyToAddresses=reply_addresses, 
-                ReturnPath=ikwargs.get('return_path'))
+                ReplyToAddresses=reply_addresses )
+                #ReturnPath=kwargs.get('return_path',''))
 
             return response.get('MessageId')
-        except boto3.SES.Client.exceptions.MessageRejected:
+        except ValueError:  #botocore.exceptions.ClientError:
             return None
 
     def send_template(self, template, to, reply_to=None, **context):
@@ -271,4 +273,4 @@ class Mail(object):
     def _listify(self, maybe_str):
         if type(maybe_str) == str:
             return [maybe_str]
-        return mabe_str    
+        return maybe_str    
