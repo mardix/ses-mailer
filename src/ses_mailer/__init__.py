@@ -86,7 +86,7 @@ class Mail(object):
     def __init__(self,
                  aws_access_key_id=None,
                  aws_secret_access_key=None,
-                 region=None,
+                 region='us-west-2',
                  sender=None,
                  reply_to=None,
                  template=None,
@@ -106,7 +106,7 @@ class Mail(object):
                 aws_secret_access_key = aws_secret_access_key
             )
             else:  # credentials from an aws config file
-                self.client = boto3.client('ses')
+                self.client = boto3.client('ses', region_name='us-west-2')
 
             self.sender = sender
             self.reply_to = reply_to or self.sender
@@ -128,7 +128,6 @@ class Mail(object):
             reply_to=app.config.get("SES_REPLY_TO", None),
             template=app.config.get("SES_TEMPLATE", None),
             template_context=app.config.get("SES_TEMPLATE_CONTEXT", {}),
-            aws_boto_auth_lookup=app.config.get("SES_AWS_BOTO_LOOKUP", False),
         )
 
     def send(self, to, subject, body, reply_to=None, sender=None, **kwargs):
@@ -271,6 +270,6 @@ class Mail(object):
             return sender, sender, sender
     
     def _listify(self, maybe_str):
-        if type(maybe_str) == str:
+        if type(maybe_str) == str or type(maybe_str) == unicode:
             return [maybe_str]
         return maybe_str    

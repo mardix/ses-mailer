@@ -1,4 +1,6 @@
-# SES Mailer
+# SES Mailer 3
+This is a fork of a fork, since the other projects haven't been updated.
+This version uses boto3 rather than the out-of-date boto module.
 
 A simple module to send email via AWS SES 
 
@@ -7,14 +9,14 @@ You can use it as standalone or with Flask
 Requirements:
 
 - AWS Credentials
-- boto
+- boto3
 - Jinja
 
 ---
 
 ## Install
 
-    pip install ses-mailer
+    pip install ses-mailer-3
 
 ## Usage
 
