@@ -270,6 +270,7 @@ class Mail(object):
             return sender, sender, sender
     
     def _listify(self, maybe_str):
-        if type(maybe_str) == str or str(type(s)) == "<type 'unicode'>": #the unicode check is like this so python3 doesn't barf
+        #the unicode check is like this so python3 doesn't barf
+        if type(maybe_str) == str or str(type(s)) == "<type 'unicode'>":
             return [maybe_str]
         return maybe_str    
